@@ -61,13 +61,13 @@ function NewUserModal(props) {
           <label htmlFor="PasswordConfirm">Confirme a senha:</label>
           <input
             required
-            placeholder="Confirme a senha...S"
+            placeholder="Confirme a senha..."
             className={inputStyle}
             id="PasswordConfirm"
             type="password"
             onChange={(e) => props.setPasswordConfirm(e.target.value)}
           ></input>
-          <InputErrorMsg>{errorMsg ? errorMsg.password[0] : ""}</InputErrorMsg>
+          <InputErrorMsg>{errorMsg?.password ? errorMsg.password[0] : ""}</InputErrorMsg>
         </div>
 
         <span className="flex justify-center">

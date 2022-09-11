@@ -6,6 +6,7 @@ import { userData } from "./store/userData";
 import { isLogged } from "./store/isLogged";
 
 function App() {
+  
   const dispatch = useDispatch();
 
   const authLoggin = (value) => {
@@ -25,8 +26,12 @@ function App() {
         dispatch(userData(res.data));
         authLoggin(res.data);
       })
-      .catch((err) => console.log(err));
-  });
+      .catch((err) => {
+        console.log(err)
+        localStorage.removeItem("Authorization")
+      });
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
 
   return (
     <div className="App">

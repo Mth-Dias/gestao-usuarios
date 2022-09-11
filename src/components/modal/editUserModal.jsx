@@ -33,14 +33,10 @@ function EditUserModal(props) {
             type="password"
             onChange={(e) => props.setCurrentPassword(e.target.value)}
           ></input>
-          {errorMsg ? (
-            errorMsg.message === "A senha atual do usuário não confere!" ? (
-              <InputErrorMsg>{errorMsg.message}</InputErrorMsg>
-            ) : (
-              ""
-            )
+          {errorMsg?.message === "A senha atual do usuário não confere!" ? (
+            <InputErrorMsg>{errorMsg.message}</InputErrorMsg>
           ) : (
-            ""
+            <></>
           )}
         </div>
         <div className={inputSpace}>
@@ -64,14 +60,10 @@ function EditUserModal(props) {
             type="password"
             onChange={(e) => props.setNewPasswordConfirm(e.target.value)}
           ></input>
-          {errorMsg ? (
-            errorMsg.errors ? (
-              <InputErrorMsg>{errorMsg.errors.new_password[0]}</InputErrorMsg>
-            ) : (
-              ""
-            )
+          {errorMsg?.errors ? (
+            <InputErrorMsg>{errorMsg.errors.new_password[0]}</InputErrorMsg>
           ) : (
-            ""
+            <></>
           )}
         </div>
         <span className="flex justify-center">

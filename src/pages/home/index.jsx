@@ -32,10 +32,6 @@ function HomePage() {
   //Dados para modal de detalhes
   const [userDetails, setUserDetails] = useState([]);
 
-  //Controladores dos modais
-  const [modalOpen, setmodalOpen] = useState(false);
-  const [modalSelected, setModalSelected] = useState();
-
   //Dados para criação de usuário
   const [name, setName] = useState();
   const [email, setEmail] = useState();
@@ -54,6 +50,46 @@ function HomePage() {
   const [totalPages, setTotalPages] = useState();
   const [currentPage, setCurrentPage] = useState(1);
 
+  //Controladores dos modais
+  const [modalSelected, setModalSelected] = useState();
+  const renderModal = () => {
+    switch(modalSelected){
+      case "new":
+        return <NewUserModal
+                  toggleLoading={toggleLoading}
+                  setNewModalErrorMsg={setNewModalErrorMsg}
+                  newModalErrorMsg={newModalErrorMsg}
+                  handleNewUser={handleNewUser}
+                  toggleModal={toggleModal}
+                  setEmail={setEmail}
+                  setPassword={setPassword}
+                  setPasswordConfirm={setPasswordConfirm}
+                  setName={setName}
+                />
+      case "update":
+        return <EditUserModal
+                  setUserDetails={setUserDetails}
+                  userDetails={userDetails}
+                  setEditModalErrorMsg={setEditModalErrorMsg}
+                  editModalErrorMsg={editModalErrorMsg}
+                  toggleLoading={toggleLoading}
+                  handleEdit={handleEdit}
+                  toggleModal={toggleModal}
+                  setCurrentPassword={setCurrentPassword}
+                  setNewPassword={setNewPassword}
+                  setNewPasswordConfirm={setNewPasswordConfirm}
+                />
+      case "details":
+        return <DetailUserModal
+                  toggleModal={toggleModal}
+                  setUserDetails={setUserDetails}
+                  userDetails={userDetails}
+                />  
+      default:
+        return <></>
+    }
+  }
+
   useEffect(() => {
     loadData(1);
 
@@ -67,8 +103,7 @@ function HomePage() {
     });
   };
 
-  const toggleModal = (modal, value) => {
-    setmodalOpen(value);
+  const toggleModal = (modal) => {
     setModalSelected(modal);
   };
 
@@ -89,8 +124,8 @@ function HomePage() {
       .then((res) => {
         console.log(res.data);
         loadData(currentPage);
-        setmodalOpen(false);
         setToggleLoading(false);
+        toggleModal("")
         setNewModalErrorMsg();
         window.alert("Usuário criado com sucesso!");
       })
@@ -122,7 +157,7 @@ function HomePage() {
       .then((res) => {
         console.log(res.data);
         setToggleLoading(false);
-        setmodalOpen(false);
+        toggleModal("")
         setEditModalErrorMsg();
         window.alert("Senha atualizada com sucesso!");
       })
@@ -136,11 +171,7 @@ function HomePage() {
   const handleDelete = (value) => {
     if (window.confirm(`Confirma remoção do usuário: ${value.name}?`)) {
       instance
-        .delete(`/users/${value.id}`, {
-          headers: {
-            Authorization: localStorage.getItem("Authorization"),
-          },
-        })
+        .delete(`/users/${value.id}`)
         .then(() => {
           loadData(currentPage);
         });
@@ -171,8 +202,12 @@ function HomePage() {
           <table className="border-2 border-gray-300 w-full">
             <thead className="align-center bg-gray-200 border-b-2 border-gray-300">
               <tr>
-                <th className="w-80 text-start px-4 p-2 border-2 border-gray-300">Nome</th>
-                <th className="text-start px-4 p-2 border-2 border-gray-300">E-mail</th>
+                <th className="w-80 text-start px-4 p-2 border-2 border-gray-300">
+                  Nome
+                </th>
+                <th className="text-start px-4 p-2 border-2 border-gray-300">
+                  E-mail
+                </th>
                 <th className="w-24"></th>
                 <th className="w-24">Ações</th>
                 <th className="w-24"></th>
@@ -271,44 +306,7 @@ function HomePage() {
         </span>
       </div>
       <div>
-        {modalOpen ? (
-          modalSelected === "update" ? (
-            <EditUserModal
-              setUserDetails={setUserDetails}
-              userDetails={userDetails}
-              setEditModalErrorMsg={setEditModalErrorMsg}
-              editModalErrorMsg={editModalErrorMsg}
-              toggleLoading={toggleLoading}
-              handleEdit={handleEdit}
-              toggleModal={toggleModal}
-              setCurrentPassword={setCurrentPassword}
-              setNewPassword={setNewPassword}
-              setNewPasswordConfirm={setNewPasswordConfirm}
-            />
-          ) : modalSelected === "details" ? (
-            <DetailUserModal
-              toggleModal={toggleModal}
-              setUserDetails={setUserDetails}
-              userDetails={userDetails}
-            />
-          ) : modalSelected === "new" ? (
-            <NewUserModal
-              toggleLoading={toggleLoading}
-              setNewModalErrorMsg={setNewModalErrorMsg}
-              newModalErrorMsg={newModalErrorMsg}
-              handleNewUser={handleNewUser}
-              toggleModal={toggleModal}
-              setEmail={setEmail}
-              setPassword={setPassword}
-              setPasswordConfirm={setPasswordConfirm}
-              setName={setName}
-            />
-          ) : (
-            <></>
-          )
-        ) : (
-          <></>
-        )}
+          {renderModal()}
       </div>
     </div>
   );

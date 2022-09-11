@@ -1,6 +1,6 @@
 import axios from "axios";
 
-axios.defaults.baseURL ='https://backendlaravel-api.herokuapp.com'
+axios.defaults.baseURL ='http://localhost/api'
 axios.defaults.headers.patch['Content-Type'] = 'application/json';
 axios.defaults.headers.post['Content-Type'] = 'multipart/form-data'
 

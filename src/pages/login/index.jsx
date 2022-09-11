@@ -42,8 +42,8 @@ function LoginPage() {
       .catch((err) => {
         setErrorMsg(err.response.data);
         console.log(err.response.data);
-        setToggleLoading(false);
-      });
+        setToggleLoading(false)
+      })
   };
 
   return (

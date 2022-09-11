@@ -4,14 +4,14 @@ import { ImCross } from "react-icons/im";
 function ModalWindow(props) {
   return (
     <div className="flex flex-col px-4 md:px-0 items-center justify-center fixed inset-0 bg-black bg-opacity-60 ">
-      <div className="bg-white rounded px-4 max-w-md w-full">
+      <div className="bg-white rounded px-4 max-w-lg w-full">
         <span className="flex my-4 justify-between items-center">
           <h1 className="text-2xl font-semibold">{props.title}</h1>
           <ImCross
             style={{ fontSize: "20px" }}
             className="cursor-pointer"
             onClick={() => {
-              props.toggleModal("", false);
+              props.toggleModal("");
               if (props.setEditModalErrorMsg) {
                 props.setEditModalErrorMsg();
               }
@@ -24,7 +24,7 @@ function ModalWindow(props) {
             }}
           />
         </span>
-        <hr className="" />
+        <hr/>
         {props.children}
       </div>
     </div>
